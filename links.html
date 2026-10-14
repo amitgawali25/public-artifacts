@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Guest Links</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&display=swap">
+<style>
+:root{--navy:#0a0b4d;--panel:#14156e;--gold:#fdd46b;--cream:#fff4dc;--serif:"Cormorant Garamond",Georgia,serif;color-scheme:dark}
+body{margin:0;min-height:100svh;background:var(--navy);color:var(--cream);font:18px/1.4 var(--serif);display:flex;justify-content:center;padding:28px max(16px,env(safe-area-inset-left,0px)) 40px max(16px,env(safe-area-inset-right,0px));box-sizing:border-box}
+main{width:100%;max-width:460px;display:grid;gap:16px;align-content:start}
+h1{margin:0;color:var(--gold);font-size:30px;line-height:1.1}
+p{margin:0}
+label{font-weight:700;color:var(--gold);font-size:15px;letter-spacing:.1em;text-transform:uppercase}
+input{width:100%;box-sizing:border-box;font:500 20px var(--serif);padding:12px 14px;border-radius:10px;border:1px solid rgba(253,212,107,.6);background:var(--panel);color:var(--cream)}
+input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.out{background:var(--panel);border-radius:12px;padding:14px;display:grid;gap:10px}
+.url{word-break:break-all;font-size:16px;color:var(--cream);user-select:all}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+button,.btn{font:700 17px var(--serif);border-radius:999px;padding:10px 18px;border:0;cursor:pointer;text-decoration:none;display:inline-block}
+.primary{background:var(--gold);color:var(--navy)}
+.ghost{background:transparent;color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+small{color:rgba(255,244,220,.65);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Make a guest link</h1>
+  <p>Type the name to greet. The invitation will open with “Dear …” at the top, and their WhatsApp reply will include the name.</p>
+  <label for="name">Guest name</label>
+  <input id="name" type="text" placeholder="e.g. Sharma family" autocomplete="off">
+  <div class="out">
+    <div class="url" id="url"></div>
+    <div class="row">
+      <button class="primary" id="copy" type="button">Copy link</button>
+      <a class="btn ghost" id="wa" target="_blank" rel="noopener">Send on WhatsApp</a>
+      <a class="btn ghost" id="open" target="_blank" rel="noopener">Preview</a>
+    </div>
+  </div>
+  <small>This page is for you, not your guests.</small>
+</main>
+<script>
+const base='https://amitgawali25.github.io/public-artifacts/';
+const name=document.getElementById('name'),url=document.getElementById('url'),copy=document.getElementById('copy');
+const km=location.hash.match(/k=([A-Za-z0-9_-]+)/); const key=km?km[1]:'';
+if(!key){document.querySelector('main').innerHTML='<h1>Missing key</h1><p>Open this page with the full private link Claude gave you (it ends in #k=…).</p>';}
+function link(){const v=name.value.trim();return (v?base+'?to='+encodeURIComponent(v):base)+'#k='+key;}
+function update(){const l=link();url.textContent=l;document.getElementById('open').href=l;
+  const v=name.value.trim();
+  document.getElementById('wa').href='https://wa.me/?text='+encodeURIComponent((v?'Dear '+v+', ':'')+"you're invited to our Diwali celebration! 🪔 "+l);}
+name.addEventListener('input',update);update();
+copy.addEventListener('click',()=>{const l=link();
+  const done=()=>{copy.textContent='Copied';setTimeout(()=>copy.textContent='Copy link',1500);};
+  try{navigator.clipboard.writeText(l).then(done).catch(sel);}catch(_){sel();}
+  function sel(){const r=document.createRange();r.selectNodeContents(url);const s=getSelection();s.removeAllRanges();s.addRange(r);copy.textContent='Selected';}
+});
+</script>
+</body>
+</html>
