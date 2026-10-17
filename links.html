@@ -45,7 +45,7 @@ const base='https://amitgawali25.github.io/public-artifacts/';
 const name=document.getElementById('name'),url=document.getElementById('url'),copy=document.getElementById('copy');
 const km=location.hash.match(/k=([A-Za-z0-9_-]+)/); const key=km?km[1]:'';
 if(!key){document.querySelector('main').innerHTML='<h1>Missing key</h1><p>Open this page with the full private link Claude gave you (it ends in #k=…).</p>';}
-function link(){const v=name.value.trim();return (v?base+'?to='+encodeURIComponent(v):base)+'#k='+key;}
+function link(){const v=name.value.trim();return base+'?v=3'+(v?'&to='+encodeURIComponent(v):'')+'#k='+key;}
 function update(){const l=link();url.textContent=l;document.getElementById('open').href=l;
   const v=name.value.trim();
   document.getElementById('wa').href='https://wa.me/?text='+encodeURIComponent((v?'Dear '+v+', ':'')+"you're invited to our Diwali celebration! 🪔 "+l);}
