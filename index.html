@@ -26,9 +26,15 @@ html,body{margin:0;min-height:100%;background:#0a0b4d;color:#fdd46b;font-family:
 .lock h1{margin:0;font-size:28px;font-weight:700}
 .lock p{margin:0;font-size:17px;line-height:1.4;color:#fff4dc}
 .diya{font-size:40px;line-height:1}
+.lock[hidden],.loading[hidden]{display:none}
+.loading{min-height:100vh;min-height:100svh;display:grid;place-items:center}
+.loading span{font-size:44px;animation:glow 1.2s ease-in-out infinite alternate}
+@keyframes glow{from{opacity:.35;transform:scale(.92)}to{opacity:1;transform:scale(1.05)}}
+@media (prefers-reduced-motion:reduce){.loading span{animation:none}}
 </style>
 </head>
 <body>
+<div class="loading" id="loading" aria-label="Opening your invitation"><span aria-hidden="true">🪔</span></div>
 <div class="lock" id="lock" hidden>
   <div>
     <div class="diya" aria-hidden="true">🪔</div>
@@ -38,7 +44,7 @@ html,body{margin:0;min-height:100%;background:#0a0b4d;color:#fdd46b;font-family:
 </div>
 <script>
 (async function(){
-  const lock=()=>{document.getElementById('lock').hidden=false;};
+  const lock=()=>{document.getElementById('loading').hidden=true;document.getElementById('lock').hidden=false;};
   try{
     const m=location.hash.match(/k=([A-Za-z0-9_-]+)/);
     if(!m||!window.crypto||!crypto.subtle) return lock();
